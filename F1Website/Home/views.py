@@ -1,32 +1,33 @@
-import json
+import json, operator, requests
+import pandas as pd
 from django.http import response
 from django.shortcuts import render
-import requests
 
-# Create your views here.
+# Return driver information for all current 2021 drivers
+# for home.html
 def home(request):
+#<-------------------- API -------------------->
 
+    #API request to get current 2021 F1 driver standings data
+    #http://ergast.com/mrd/
     # response = requests.get('http://ergast.com/api/f1/current/driverStandings.json')
+    
+    #Returns JSON object
     # geodata = response.json()
-
-    # print(json.dumps(geodata, indent=2))
 
     # driver_data = geodata['MRData']['StandingsTable']['StandingsLists'][0]['DriverStandings']
 
-    # with open('current.json', 'w') as outfile:
+
+#<-------------------- Local Storage -------------------->
+
+    #<---------- Writing ---------->
+    # Write when pulling from the API
+    # with open(r'../data/current_standings.json', 'w') as outfile:
     #     json.dump(driver_data, outfile)
 
-    with open(r"C:\Users\oknis\OneDrive\Documents\Websites\F1\F1-Website\standings.json") as json_file:
+    #<---------- Reading ---------->
+    with open(r"../data/current_standings.json") as json_file:
         driver_data = json.load(json_file)
-
-    # print(json.dumps(driver_data, indent=2))
-
-    # for i in driver_data:
-
-    #     print(i['Constructors'][0]['constructorId'])
-    
-    # for i in driver_data:
-    #     print(i['Driver']['driverId'])
 
     context = {
         'driver_data': driver_data
@@ -34,39 +35,48 @@ def home(request):
 
     return render(request, 'Home/home.html', context)
 
+# Return the driver information and race results of the driver for driver_page.html
+# Requires pk = driverId
 def driver_page(request, pk):
-
-    # print(pk)
-
-    # response = requests.get(f'http://ergast.com/api/f1/drivers/{pk}/results.json?limit=500')
+#<-------------------- API -------------------->
+    # #API request to get all information of current standing drivers
+    # #http://ergast.com/mrd/
+    # response = requests.get(f'http://ergast.com/api/f1/current/driverStandings.json')
     # geodata = response.json()
-
-    # print(json.dumps(geodata, indent=2))
 
     # driver_data = geodata['MRData']['StandingsTable']['StandingsLists'][0]['DriverStandings']
 
+    #API request to get all race results of the selected driver (pk)
+    #http://ergast.com/mrd/
+    # response = requests.get(f'http://ergast.com/api/f1/drivers/{pk}/results.json?limit=500')
+    # geodata = response.json()
+
     # result_data = geodata['MRData']['RaceTable']['Races']
+    # Sort race results from Latest to Oldest by Season then Round
+    # result_data.sort(key = lambda i: (get_season(i), get_round(i)), reverse=True)
 
-    # print(json.dumps(result_data, indent=2))
+#<-------------------- Local Storage -------------------->
 
-    # with open('results.json', 'w') as outfile:
+    #<---------- Writing ---------->
+    # Write when pulling from the API
+    # with open(f'../data/results/{pk}_results.json', 'w') as outfile:
     #     json.dump(result_data, outfile)
 
-    with open(r"C:\Users\oknis\OneDrive\Documents\Websites\F1\F1-Website\standings.json") as json_file:
+    #<---------- Reading ---------->
+    with open(r"../data/current_standings.json") as json_file:
         driver_data = json.load(json_file)
 
-    with open(r"C:\Users\oknis\OneDrive\Documents\Websites\F1\F1-Website\results.json") as json_file:
+    with open(f"../data/results/{pk}_results.json") as json_file:
         result_data = json.load(json_file)
 
+    # Search driverID until it matches with PK which is the driverID
+    # of the selected driver
     count = 0
-
     for i in driver_data:
 
         if i['Driver']['driverId'] == pk:
             break
         count += 1
-
-    # print(json.dumps(driver_data[count], indent=2))
 
     context = {
         'driver_data': driver_data[count],
@@ -74,3 +84,7 @@ def driver_page(request, pk):
     }
 
     return render(request, 'Home/driver_page.html', context)
+
+# Orders by lexicographical order so we need to cast as int
+def get_season(result_data): return int(result_data.get('season'))
+def get_round(result_data): return int(result_data.get('round'))
