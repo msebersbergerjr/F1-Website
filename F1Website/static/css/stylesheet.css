@@ -48,6 +48,10 @@ a:hover {
     width: 550px;
     height: 500px;
     object-fit: cover;
+    border-style: solid;
+    border-color: rgb(104, 104, 104);
+    border-width: 4px;
+    border-radius: 15px;
 }
 
 .results {
@@ -96,12 +100,20 @@ a:hover {
 
 .driver-flg {
     height: 90px;
+    border-style: solid;
+    border-color: rgb(104, 104, 104);
+    border-width: 4px;
+    border-radius: 15px;
 }
 
 .driver-num {
     font-family: 'Bebas Neue', cursive;
     font-size: 55px;
+    font-weight: bold;
     text-align: right;
+    font-style: italic;
+    padding-right: 10px;
+    padding-top: 5px;
 }
 
 .driver-name {
@@ -109,14 +121,49 @@ a:hover {
     font-size: 60px;
 }
 
+.driver-helm {
+    text-align: right;
+}
+
 .card-banner {
-    z-index: 1;
     position: relative;
+    top: 0;
+    left: 0;
     opacity: 0.2;
     filter: alpha(opacity=40);
 }
 
 .card-driver {
-    z-index: 2;
     position: absolute;
+    top: 2px;
+    left: 139px;
+    height: 151px;
+}
+
+.card-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 35px;
+}
+
+.card {
+    border-style: solid;
+    border-color: rgb(104, 104, 104);
+    border-width: 2px;
+    border-radius: 7px;
+    width: 18rem;
+    margin-left: auto;
+    margin-right: auto;
+    transition: transform .2s;
+}
+
+.card:hover {
+    border-color: rgb(255, 25, 25);
+    transform: scale(1.15);
+    filter: contrast(115%);
+    z-index: 99;
+}
+
+.card-text {
+    font-size: 15px;
+    font-weight: bold;
 }

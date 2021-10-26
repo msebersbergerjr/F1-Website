@@ -8,11 +8,14 @@ Hover border with color of driver team -->
 
 {% block content %}
 <div class="container">
-    <div class="row">
+    <div class="row g-3">
         {% for driver in driver_data %}
-        {% if forloop.counter <= 3 %} <div class="col-12 col-md-6 col-lg-4">
+        {% if forloop.counter <= 3 %} <div class="col-lg-4 col-md-6 col-sm-12 text-center">
+
+
             {% else %}
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+
+            <div class="col-xxl-3 col-lg-4 col-md-6 col-sm-12 text-center" style="align-content: center;">
                 {% endif %}
                 <a href="http://127.0.0.1:8000/{{driver.Driver.driverId}}/">
 
@@ -37,16 +40,15 @@ Hover border with color of driver team -->
                     </div>
                 </div> -->
 
-                    <div class="card" style="width: 18rem;">
-                        <img src="{% static 'images/'%}{{driver.Constructors.0.constructorId|add:'.jpeg'}}" class="card-banner"
-                        alt="...">
+                    <div class="card">
+                        <img src="https://via.placeholder.com/668x360/686868/686868?text=-" class="card-banner"
+                            alt="...">
                         <img src="{% static 'images/' %}{{driver.Driver.familyName|add:'.png'}}" class="card-driver"
                             alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{ driver.Driver.givenName }} {{ driver.Driver.familyName }}</h5>
                             <p class="card-text">
-                            <div class="rank">Position: {{ driver.position }}</div>
-                            <div class="points">Points: {{ driver.points }}</div>
+                            POSTION: {{ driver.position }} - POINTS: {{ driver.points }}
                             </p>
                         </div>
                     </div>
