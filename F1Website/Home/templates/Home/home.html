@@ -1,0 +1,45 @@
+{% extends 'F1Website/base.html' %}
+{% load static %}
+
+
+<!-- TODO:
+Spacing between drivers
+Hover border with color of driver team -->
+
+{% block content %}
+<div class="container">
+    <div class="row">
+{% for driver in driver_data %}
+    {% if forloop.counter <= 3 %}
+        <div class="col-12 col-md-6 col-lg-4 border border-danger">
+    {% else %}
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3 border border-danger">
+    {% endif %}
+            <a class="test" href="http://127.0.0.1:8000/{{driver.Driver.driverId}}/">
+                <div class="row1">
+                    <div class="rank">{{ driver.position }}</div>
+                    <div class="points">{{ driver.points }}</div>
+                </div>
+                <div class="row1">
+                    <div class="col-xs-8 f1-uppercase">
+                        <span class="d-block ">{{ driver.Driver.givenName }}</span>
+                        <span class="d-block ">{{ driver.Driver.familyName }}</span>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="permanentNumber">{{ driver.Driver.permanentNumber }}</div>
+                    </div>
+                </div>
+                <div class="constructor align-items-center f1-uppercase">{{ driver.Constructors.0.name }}</div>
+                <div class="box" style="background-image: url('{% static 'images/'%}{{driver.Constructors.0.constructorId|add:'.jpeg'}}')">
+                    <div class="row3">
+                        <img src="{% static 'images/' %}{{driver.Driver.nationality|add:'.jpeg'}}" alt="Image" width="46.px" height="30.px">
+                        <img src="{% static 'images/' %}{{driver.Driver.familyName|add:'.png'}} " alt="Image" width="192.px" height="192.px">
+                    </div>
+                </div>
+            </a>
+        </div>
+{% endfor %}
+    </div>
+</div>
+{% endblock %}
+

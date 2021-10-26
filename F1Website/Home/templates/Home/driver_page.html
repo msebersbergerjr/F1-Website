@@ -1,0 +1,108 @@
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+
+    <div class="col-12 col-md-6 col-lg-5">
+
+        <span class="driver-name">{{driver_data.Driver.givenName}} {{driver_data.Driver.familyName}}</span>
+
+    </div>
+    <div class="col-12 col-md-6 col-lg-7">
+
+        <span class="driver-name">{{driver_data.Driver.permanentNumber}}</span>
+        <img src="{% static 'images/' %}{{driver_data.Driver.nationality|add:'.jpeg'}}" alt="" width="103" height="69">
+
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-12 col-md-6 col-lg-5">
+
+        <img src="{% static 'images/' %}{{driver_data.Driver.familyName|add:'_Profile.jpeg'}}" alt="" width="670" height="720">
+
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-7">
+        <div class="row">
+            <div class="info">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>
+                                <span class="text">Team</span>
+                            </th>
+                            <td>{{driver_data.Constructors.0.name}}</td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <span class="text">Country</span>
+                            </th>
+                            <td>{{driver_data.Driver.nationality}}</td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <span class="text">Wins</span>
+                            </th>
+                            <td>{{driver_data.wins}}</td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <span class="text">Points</span>
+                            </th>
+                            <td>{{driver_data.points}}</td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <span class="text">Date of Birth</span>
+                            </th>
+                            <td>{{driver_data.Driver.dateOfBirth}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <img src="{% static 'images/' %}{{driver_data.Driver.familyName|add:'_Helmet.png'}}" alt="" width="483" height="316">
+        </div>
+        <div class="race-stats">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Season</th>
+                        <th scope="col">Constructor</th>
+                        <th scope="col">Round</th>
+                        <th scope="col">Country</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Start</th>
+                        <th scope="col">End</th>
+                        <th scope="col">Points</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for race in result_data %}
+                    <tr>
+                        <th scope="row">{{race.season}}</th>
+                        <td>{{race.Results.0.Constructor.name}}</td>
+                        <td>{{race.round}}</td>
+                        <td>{{race.Circuit.Location.country}}</td>
+                        <td>{{race.date}}</td>
+                        <td>{{race.Results.0.grid}}</td>
+                        <td>{{race.Results.0.position}}</td>
+                        <td>{{race.Results.0.points}}</td>
+                        <td>{{race.Results.0.status}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- <img src="{% static 'images/' %}{{driver_data.Constructors.0.constructorId|add:'_car.jpeg'}}" alt="" width="1020" height="350"> -->
+    </div>
+</div>
+
+
+{% endblock %}
+
+
