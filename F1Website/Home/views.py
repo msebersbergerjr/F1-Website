@@ -16,7 +16,7 @@ def home(request):
     # with open('current.json', 'w') as outfile:
     #     json.dump(driver_data, outfile)
 
-    with open('standings.json') as json_file:
+    with open(r"C:\Users\oknis\OneDrive\Documents\Websites\F1\F1-Website\standings.json") as json_file:
         driver_data = json.load(json_file)
 
     # print(json.dumps(driver_data, indent=2))
@@ -25,8 +25,8 @@ def home(request):
 
     #     print(i['Constructors'][0]['constructorId'])
     
-    for i in driver_data:
-        print(i['Driver']['driverId'])
+    # for i in driver_data:
+    #     print(i['Driver']['driverId'])
 
     context = {
         'driver_data': driver_data
@@ -36,27 +36,27 @@ def home(request):
 
 def driver_page(request, pk):
 
-    print(pk)
+    # print(pk)
 
-    response = requests.get(f'http://ergast.com/api/f1/drivers/{pk}/results.json')
-    geodata = response.json()
+    # response = requests.get(f'http://ergast.com/api/f1/drivers/{pk}/results.json')
+    # geodata = response.json()
 
     # print(json.dumps(geodata, indent=2))
 
     # driver_data = geodata['MRData']['StandingsTable']['StandingsLists'][0]['DriverStandings']
 
-    result_data = geodata['MRData']['RaceTable']['Races']
+    # result_data = geodata['MRData']['RaceTable']['Races']
 
     # print(json.dumps(result_data, indent=2))
 
-    with open('results.json', 'w') as outfile:
-        json.dump(result_data, outfile)
+    # with open('results.json', 'w') as outfile:
+    #     json.dump(result_data, outfile)
 
-    with open('standings.json') as json_file:
+    with open(r"C:\Users\oknis\OneDrive\Documents\Websites\F1\F1-Website\standings.json") as json_file:
         driver_data = json.load(json_file)
 
-    # with open('results.json') as json_file:
-    #     result_data = json.load(json_file)
+    with open(r"C:\Users\oknis\OneDrive\Documents\Websites\F1\F1-Website\results.json") as json_file:
+        result_data = json.load(json_file)
 
     count = 0
 

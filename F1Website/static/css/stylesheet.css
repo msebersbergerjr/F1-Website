@@ -1,15 +1,15 @@
-a{
-    text-decoration:none;
+a {
+    text-decoration: none;
     color: inherit;
 }
 
 a:hover {
-    color:inherit; 
-    text-decoration:none; 
-    cursor:pointer;  
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
 }
 
-.test{
+.test {
     margin: 10px;
 }
 
@@ -20,25 +20,25 @@ a:hover {
     margin-left: -10px;
 }
 
-.row1{
+.row1 {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
 }
 
-.box{
+.box {
     background-size: cover;
 }
 
-.row3{
+.row3 {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
 }
 
-.constructor{
+.constructor {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
@@ -46,4 +46,45 @@ a:hover {
 
 .f1-uppercase {
     text-transform: uppercase;
+}
+
+.driverimg {
+    width: 500px;
+    height: 300px;
+    object-fit: cover;
+}
+
+.results {
+    overflow-y: auto;
+    height: 750px;
+}
+
+.results::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track */
+
+.results::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+/* Handle */
+
+.results::-webkit-scrollbar-thumb {
+    background: #888;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+
+.results::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.top-span {
+    font-family: 'Bebas Neue', cursive;
 }
