@@ -1,5 +1,4 @@
 import json, operator, requests
-import pandas as pd
 from django.http import response
 from django.shortcuts import render
 
