@@ -38,7 +38,7 @@ def driver_page(request, pk):
 
     # print(pk)
 
-    # response = requests.get(f'http://ergast.com/api/f1/drivers/{pk}/results.json')
+    # response = requests.get(f'http://ergast.com/api/f1/drivers/{pk}/results.json?limit=500')
     # geodata = response.json()
 
     # print(json.dumps(geodata, indent=2))

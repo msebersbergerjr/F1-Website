@@ -14,7 +14,7 @@ Hover border with color of driver team -->
             {% else %}
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                 {% endif %}
-                <a class="test" href="http://127.0.0.1:8000/{{driver.Driver.driverId}}/">
+                <a href="http://127.0.0.1:8000/{{driver.Driver.driverId}}/">
 
                     <!-- <div class="row1">
                     <div class="rank">{{ driver.position }}</div>
@@ -38,7 +38,9 @@ Hover border with color of driver team -->
                 </div> -->
 
                     <div class="card" style="width: 18rem;">
-                        <img src="{% static 'images/' %}{{driver.Driver.familyName|add:'.png'}}" class="card-img-top"
+                        <img src="{% static 'images/'%}{{driver.Constructors.0.constructorId|add:'.jpeg'}}" class="card-banner"
+                        alt="...">
+                        <img src="{% static 'images/' %}{{driver.Driver.familyName|add:'.png'}}" class="card-driver"
                             alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{ driver.Driver.givenName }} {{ driver.Driver.familyName }}</h5>

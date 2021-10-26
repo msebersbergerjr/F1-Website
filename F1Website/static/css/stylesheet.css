@@ -9,10 +9,6 @@ a:hover {
     cursor: pointer;
 }
 
-.test {
-    margin: 10px;
-}
-
 .row {
     display: flex;
     flex-wrap: wrap;
@@ -49,8 +45,8 @@ a:hover {
 }
 
 .driverimg {
-    width: 500px;
-    height: 300px;
+    width: 550px;
+    height: 500px;
     object-fit: cover;
 }
 
@@ -87,4 +83,40 @@ a:hover {
 
 .top-span {
     font-family: 'Bebas Neue', cursive;
+    height: 50px;
+}
+
+.navbar-img {
+    height: 50px;
+}
+
+.flag-box {
+    text-align: right;
+}
+
+.driver-flg {
+    height: 90px;
+}
+
+.driver-num {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 55px;
+    text-align: right;
+}
+
+.driver-name {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 60px;
+}
+
+.card-banner {
+    z-index: 1;
+    position: relative;
+    opacity: 0.2;
+    filter: alpha(opacity=40);
+}
+
+.card-driver {
+    z-index: 2;
+    position: absolute;
 }
