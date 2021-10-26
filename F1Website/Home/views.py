@@ -1,5 +1,7 @@
 import json, operator, requests
 import os
+import pandas as pd
+from django.http.request import HttpHeaders
 from django.http import response
 from django.shortcuts import render
 
@@ -72,6 +74,36 @@ def driver_page(request, pk):
     with open(r_path) as json_file:
         result_data = json.load(json_file)
 
+
+
+
+
+    # load into Pandas
+    # df = pd.json_normalize(result_data)
+
+    # df['Time'] = ""
+
+    # def extractTime(x) -> str:
+    #     """
+    #     Extracts the course time from Results
+    #     """
+    #     raw = x[0]
+    #     raw_dict = raw['Time']
+    #     print(raw_dict['time'])
+    #     return str(raw_dict['time'])
+
+    # df["Time"] = df["Results"].apply(lambda x: extractTime(x))
+    # df.head(20)
+
+    # subset = df[['season','Circuit.circuitName', 'Results']]
+
+    # print(subset)
+
+
+
+
+
+
     # Search driverID until it matches with PK which is the driverID
     # of the selected driver
     count = 0
@@ -91,3 +123,15 @@ def driver_page(request, pk):
 # Orders by lexicographical order so we need to cast as int
 def get_season(result_data): return int(result_data.get('season'))
 def get_round(result_data): return int(result_data.get('round'))
+
+# Performance history of the track for the driver
+# y-axis - Speed
+# x-axis - Year
+def performence_histroy(request, pk):
+
+    year = []
+    time = []
+
+    r_path = os.path.join("data/results", f"{pk}_results.json")
+    with open(r_path) as json_file:
+        result_data = json.load(json_file)
