@@ -27,7 +27,7 @@ def home(request):
     '''
 #<-------------------- Local Storage -------------------->
     #<---------- Reading ---------->
-    path = os.path.join("data")
+    path = os.path.join("F1Website","data")
     to_file = os.path.join(path, 'current_standings.json')
 
     fileCheck(to_file)
@@ -49,7 +49,7 @@ def driver_page(request, pk):
     '''
 #<-------------------- Local Storage -------------------->
     #<---------- Reading ---------->
-    path = os.path.join("data")
+    path = os.path.join("F1Website","data")
     to_file = os.path.join(path, 'current_standings.json')
 
     fileCheck(to_file)
@@ -57,7 +57,7 @@ def driver_page(request, pk):
     with open(to_file) as json_file:
         driver_data = json.load(json_file)
 
-    path = os.path.join("data", "results")
+    path = os.path.join("F1Website","data", "results")
     to_file = os.path.join(path, f'{pk}_results.json')
 
     fileCheck(to_file)
