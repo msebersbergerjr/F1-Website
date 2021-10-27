@@ -100,10 +100,6 @@ def driver_page(request, pk):
     # print(subset)
 
 
-
-
-
-
     # Search driverID until it matches with PK which is the driverID
     # of the selected driver
     count = 0
