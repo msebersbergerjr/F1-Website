@@ -1,3 +1,4 @@
 djagno
 requests
 pandas
+tqdm
