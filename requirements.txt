@@ -1,2 +1,3 @@
 djagno
 requests
+pandas

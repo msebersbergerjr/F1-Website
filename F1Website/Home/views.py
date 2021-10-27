@@ -28,8 +28,8 @@ def home(request):
     #     json.dump(driver_data, outfile)
 
     #<---------- Reading ---------->
-    path = os.path.join("data", "current_standings.json")
-    with open(path) as json_file:
+    # path = os.path.join("data", "current_standings.json")
+    with open("../data/current_standings.json") as json_file:
         driver_data = json.load(json_file)
 
     context = {
@@ -66,12 +66,12 @@ def driver_page(request, pk):
     #     json.dump(result_data, outfile)
 
     #<---------- Reading ---------->
-    cs_path = os.path.join("data", "current_standings.json")
-    with open(cs_path) as json_file:
+    # cs_path = os.path.join("data", "current_standings.json")
+    with open("../data/current_standings.json") as json_file:
         driver_data = json.load(json_file)
 
-    r_path = os.path.join("data/results", f"{pk}_results.json")
-    with open(r_path) as json_file:
+    # r_path = os.path.join("data/results", f"{pk}_results.json")
+    with open(f"../data/results/{pk}_results.json") as json_file:
         result_data = json.load(json_file)
 
 

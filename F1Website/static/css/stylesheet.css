@@ -49,9 +49,9 @@ a:hover {
     height: 500px;
     object-fit: cover;
     border-style: solid;
-    border-color: rgb(104, 104, 104);
-    border-width: 4px;
-    border-radius: 15px;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 4px;
 }
 
 .results {
@@ -101,9 +101,9 @@ a:hover {
 .driver-flg {
     height: 90px;
     border-style: solid;
-    border-color: rgb(104, 104, 104);
-    border-width: 4px;
-    border-radius: 15px;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 6px;
 }
 
 .driver-num {
@@ -127,43 +127,63 @@ a:hover {
 
 .card-banner {
     position: relative;
-    top: 0;
-    left: 0;
-    opacity: 0.2;
-    filter: alpha(opacity=40);
+    /* background-image: url('../../../static/images/banner.png'); */
 }
 
 .card-driver {
-    position: absolute;
-    top: 2px;
-    left: 139px;
-    height: 151px;
+    height: auto;
+    width: 150px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .card-title {
     font-family: 'Bebas Neue', cursive;
     font-size: 35px;
+    padding-top: 6px;
 }
 
 .card {
     border-style: solid;
-    border-color: rgb(104, 104, 104);
     border-width: 2px;
     border-radius: 7px;
-    width: 18rem;
     margin-left: auto;
     margin-right: auto;
     transition: transform .2s;
 }
 
 .card:hover {
-    border-color: rgb(255, 25, 25);
-    transform: scale(1.15);
-    filter: contrast(115%);
+    border-top-color: rgb(255, 25, 25);
+    border-right-color: rgb(255, 25, 25);
+    border-bottom-color: rgb(104, 104, 104);
+    border-left-color: rgb(104, 104, 104);
+    border-width: 3px;
+    transform: scale(1.1);
+    filter: contrast(110%);
     z-index: 99;
 }
 
 .card-text {
     font-size: 15px;
     font-weight: bold;
+    margin-top: -15px;
+}
+
+.card-text:last-child {
+    margin-bottom: 5px;
+}
+
+.card-body {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.header-title {
+    text-align: center;
+    font-family: 'Bebas Neue', cursive;
+    font-weight: bold;
+    font-size: 55px;
+    margin-bottom: 20px;
 }
