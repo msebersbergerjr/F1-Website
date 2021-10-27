@@ -12,12 +12,12 @@ Hover border with color of driver team -->
 
     <div class="row g-2">
         {% for driver in driver_data %}
-        {% if forloop.counter <= 3 %} <div class="col-lg-4 col-md-6 col-sm-12 text-center">
+        {% if forloop.counter <= 3 %} <div class="col-lg-4 col-md-6 col-sm-12">
 
 
             {% else %}
 
-            <div class="col-lg-3 col-md-6 col-sm-12 text-center" style="align-content: center;">
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12" style="align-content: center;">
                 {% endif %}
                 <a href="http://127.0.0.1:8000/{{driver.Driver.driverId}}/">
 
@@ -43,16 +43,16 @@ Hover border with color of driver team -->
                 </div> -->
 
                     <div class="card">
-                        <div class="card-banner" style=" background-image: url( '{% static 'images/' %}{{driver.Constructors.0.constructorId|add:'_card.png'}}' );">
+                        <div class="card-banner"
+                            style=" background-image: url( '{% static 'images/' %}{{driver.Constructors.0.constructorId|add:'_card.png'}}' );">
                             <img src="{% static 'images/' %}{{driver.Driver.familyName|add:'.png'}}" class="card-driver"
                                 alt="...">
                         </div>
 
-                        <div class="card-body">
-                            <h5 class="card-title">{{ driver.Driver.givenName }} {{ driver.Driver.familyName }}</h5>
-                            <p class="card-text">
-                                POSTION: {{ driver.position }} - PTS: {{ driver.points }}
-                            </p>
+                        <div class="card-body row">
+                            <div class="col-12 card-title">
+                                <div class="card-position">{{ driver.position }} <span class="card-name">{{ driver.Driver.familyName }}</span></div>
+                            </div>
                         </div>
                     </div>
                 </a>
