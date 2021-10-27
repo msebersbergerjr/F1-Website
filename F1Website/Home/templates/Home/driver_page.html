@@ -115,6 +115,36 @@
             </div>
         </div>
 
+        <!-- Nested Table -->
+        <div class="row">
+            <div class="col-12">
+                <div class="results">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Track-Name</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Laps</th>
+                                <th scope="col">Fastest-Lap</th>
+                                <th scope="col">Average-Speed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for race in result_data %}
+                            <tr>
+                                <td>{{race.raceName}}</td>
+                                <td>{{race.Circuit.Location.locality}}</td>
+                                <td>{{race.Results.0.laps}}</td>
+                                <td>{{race.Results.0.FastestLap.Time.time}}</td>
+                                <td>{{race.Results.0.FastestLap.AverageSpeed.speed}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 
