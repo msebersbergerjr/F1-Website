@@ -34,7 +34,7 @@ current_standings_data = geodata['MRData']['StandingsTable']['StandingsLists'][0
 Write sorted result_data
 Compatible path for any OS
 '''
-path = os.path.join("data")
+path = os.path.join("F1Website", "data")
 to_file = os.path.join(path, 'current_standings.json')
 
 fileCheck(to_file)
@@ -79,7 +79,7 @@ with tqdm(total=len(current_drivers), ascii=False) as pbar:
         Write sorted result_data
         Compatible path for any OS
         '''
-        path = os.path.join("data","results")
+        path = os.path.join("F1Website", "data", "results")
         to_file = os.path.join(path, f'{driver}_results.json')
 
         fileCheck(to_file)
