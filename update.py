@@ -219,17 +219,20 @@ for driver in current_drivers:
 
     for race in result_data:
         
-        i = laptime_df.index[(laptime_df['season'] == int(race['season'])) & (laptime_df['circuitId'] == race['Circuit']['circuitId'])].tolist()
+        i = laptime_df.index[(laptime_df['season'] == int(race['season'])) & (laptime_df['round'] == int(race['round'])) & (laptime_df['circuitId'] == race['Circuit']['circuitId'])].tolist()
         
         '''
         if: driver one that race, take time
         else: get driver time and add to time of 1st place
         '''
         if(laptime_df.loc[i]['driverId'] == race['Results'][0]['Driver']['driverId']).all():
-            pass
             '''convert driver time to type time'''
-            # try:
-            #     time = datetime.strptime(race['Results'][0]['Time']['time'],'%I:%M:%S.%f').time()
+            try:
+                clean_time = datetime.strptime(race['Results'][0]['Time']['time'],'%I:%M:%S.%f').time()
+                print('1st' ,clean_time, race['Circuit']['circuitId'], race['Results'][0]['Driver']['driverId'])
+            except:
+                clean_time = datetime.strptime(race['Results'][0]['Time']['time'],'%M:%S.%f').time()
+                print('1st' ,clean_time, race['Circuit']['circuitId'], race['Results'][0]['Driver']['driverId'])
         else:
             '''Check if a Time dictionary exist'''
             try:
@@ -239,20 +242,23 @@ for driver in current_drivers:
             else:
                 exists = True
 
-            if race['Results'][0]['status'] == 'Finished':
-                '''Check if status is finished'''
-                print('True')
+            if exists:
+                if race['Results'][0]['status'] == 'Finished':
+                    '''Check if status is finished'''
+                    dirty_time = race['Results'][0]['Time']['time']
+                    clean_time = dirty_time[1:]
+                else:
+                    '''if: NOT finished then the time is their total time'''
+                    print(race['Results'][0]['status'], race['Circuit']['circuitId'], race['Results'][0]['Driver']['driverId'])
+                    pass
 
+                '''convert driver time to type time'''
+                try:
+                    print(race['Results'][0]['status'], dirty_time ,clean_time, race['Circuit']['circuitId'], race['Results'][0]['Driver']['driverId'])
+                    clean_time = datetime.strptime(clean_time,'%S.%f').time()
+                except ValueError:
+                    print(race['Results'][0]['status'], dirty_time ,clean_time, race['Circuit']['circuitId'], race['Results'][0]['Driver']['driverId'])
+                    clean_time = datetime.strptime(clean_time,'%M:%S.%f').time()
             else:
-                '''if: NOT finished then the time is their total time'''
-                print('False')
-
-            '''convert driver time to type time'''
-
-        # print('\nDriver')
-        # print(race['season'], race['Circuit']['circuitId'], race['Results'][0]['Driver']['driverId'])
-        # print('1st Place')
-        # print(laptime_df.iloc[count])
-        # print('Count')
-        # print(count)
-        # count += 1
+                print('NO DICT TIME')
+                pass
