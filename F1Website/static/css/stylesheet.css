@@ -175,15 +175,65 @@ a:hover {
 }
 
 .card:hover {
-    border-top-color: rgb(255, 25, 25);
-    border-right-color: rgb(255, 25, 25);
     border-left: none;
     border-bottom: none;
-    border-width: 3px;
+    border-width: 4px;
     transform: scale(1.1);
     filter: contrast(110%);
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
     z-index: 99;
+}
+
+/* Card border change on hover */
+
+#red_bull:hover {
+    border-top-color: #000B8D;
+    border-right-color: #000B8D;
+}
+
+#alfa:hover {
+    border-top-color: #9d2235;
+    border-right-color: #9d2235;
+}
+
+#alphatauri:hover {
+    border-top-color: #01102f;
+    border-right-color: #01102f;
+}
+
+#alpine:hover {
+    border-top-color: #0756ab;
+    border-right-color: #0756ab;
+}
+
+#aston_martin:hover {
+    border-top-color: #0a5a4f;
+    border-right-color: #0a5a4f;
+}
+
+#ferrari:hover {
+    border-top-color: #db0c06;
+    border-right-color: #db0c06;
+}
+
+#haas:hover {
+    border-top-color: #f81034;
+    border-right-color: #f81034;
+}
+
+#mclaren:hover {
+    border-top-color: #ffa112;
+    border-right-color: #ffa112;
+}
+
+#mercedes:hover {
+    border-top-color: #019e95;
+    border-right-color: #019e95;
+}
+
+#williams:hover {
+    border-top-color: #70c6e5;
+    border-right-color: #70c6e5;
 }
 
 .card-text {
