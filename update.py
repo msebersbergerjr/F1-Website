@@ -1,6 +1,7 @@
 from numpy import empty
 import requests, json, os.path, io, pandas as pd
-from datetime import datetime
+import datetime as dt
+from datetime import datetime, timedelta
 from tqdm import tqdm
 
 #<-------------------- Misc -------------------->
@@ -135,14 +136,16 @@ def fileCheck(path, dot):
 #             round = int(race['round'])
 #             circuitId = race['Circuit']['circuitId']
 
-#             '''
-#             Sometimes a race is cancled or stopped due to something
-#             so this try/excepts incase there is no proper track time
-#             '''
-#             try:
-#                 time = datetime.strptime(race['Results'][0]['Time']['time'],'%I:%M:%S.%f').time()
-#             except:
-#                 time = datetime.strptime(race['Results'][0]['Time']['time'],'%M:%S.%f').time()
+#             time = race['Results'][0]['Time']['time']
+
+#             # '''
+#             # Sometimes a race is cancled or stopped due to something
+#             # so this try/excepts incase there is no proper track time
+#             # '''
+#             # try:
+#             #     time = datetime.strptime(race['Results'][0]['Time']['time'],'%I:%M:%S.%f').time()
+#             # except:
+#             #     time = datetime.strptime(race['Results'][0]['Time']['time'],'%M:%S.%f').time()
 
 #             driverId = race['Results'][0]['Driver']['driverId']
 
@@ -205,7 +208,7 @@ for driver in driver_data:
 Check season, circuitId, check diverId, then get the time
 '''
 for driver in current_drivers:
-    
+
     path = os.path.join("F1Website","data", "results")
     to_file = os.path.join(path, f'{driver}_results.json')
     dot = 'json'
@@ -220,7 +223,7 @@ for driver in current_drivers:
     for race in result_data:
         
         i = laptime_df.index[(laptime_df['season'] == int(race['season'])) & (laptime_df['round'] == int(race['round'])) & (laptime_df['circuitId'] == race['Circuit']['circuitId'])].tolist()
-        
+        # print(race['season'], race['round'], race['Circuit']['circuitId'])
         '''
         if: driver one that race, take time
         else: get driver time and add to time of 1st place
@@ -228,37 +231,63 @@ for driver in current_drivers:
         if(laptime_df.loc[i]['driverId'] == race['Results'][0]['Driver']['driverId']).all():
             '''convert driver time to type time'''
             try:
-                clean_time = datetime.strptime(race['Results'][0]['Time']['time'],'%I:%M:%S.%f').time()
-                print('1st' ,clean_time, race['Circuit']['circuitId'], race['Results'][0]['Driver']['driverId'])
+                dirty_time = datetime.strptime(race['Results'][0]['Time']['time'],'%I:%M:%S.%f').time()
+                track_time = timedelta(hours=dirty_time.hour, minutes=dirty_time.minute, seconds=dirty_time.second, milliseconds=dirty_time.microsecond)
+                print(track_time, race['season'] ,race['round'], race['Circuit']['circuitId'], race['Results'][0]['Driver']['driverId'])
+                
             except:
-                clean_time = datetime.strptime(race['Results'][0]['Time']['time'],'%M:%S.%f').time()
-                print('1st' ,clean_time, race['Circuit']['circuitId'], race['Results'][0]['Driver']['driverId'])
+                dirty_time = datetime.strptime(race['Results'][0]['Time']['time'],'%M:%S.%f').time()
+                track_time = timedelta(minutes=dirty_time.minute, seconds=dirty_time.second, milliseconds=dirty_time.microsecond)
+                print(track_time, race['season'] ,race['round'], race['Circuit']['circuitId'], race['Results'][0]['Driver']['driverId'])
         else:
-            '''Check if a Time dictionary exist'''
-            try:
-                race['Results'][0]['Time']
-            except KeyError:
-                exists = False
-            else:
-                exists = True
+            '''Check if they Finished Race'''
+            if race['Results'][0]['status'] == 'Finished':
 
-            if exists:
-                if race['Results'][0]['status'] == 'Finished':
-                    '''Check if status is finished'''
-                    dirty_time = race['Results'][0]['Time']['time']
-                    clean_time = dirty_time[1:]
-                else:
-                    '''if: NOT finished then the time is their total time'''
-                    print(race['Results'][0]['status'], race['Circuit']['circuitId'], race['Results'][0]['Driver']['driverId'])
-                    pass
+                '''Strip the '+' infront of the time'''
+                raw_time = race['Results'][0]['Time']['time']
+                dirty_time = raw_time[1:]
 
-                '''convert driver time to type time'''
+                '''for the RARE case there is a 's' in the time'''
+                if dirty_time[-1] == 's':
+                    dirty_time = dirty_time[:-1]
+
+                '''for the Rare case the seconds go over 60 and DONT convert'''
                 try:
-                    print(race['Results'][0]['status'], dirty_time ,clean_time, race['Circuit']['circuitId'], race['Results'][0]['Driver']['driverId'])
-                    clean_time = datetime.strptime(clean_time,'%S.%f').time()
+                    int(dirty_time[:2])
+                
                 except ValueError:
-                    print(race['Results'][0]['status'], dirty_time ,clean_time, race['Circuit']['circuitId'], race['Results'][0]['Driver']['driverId'])
-                    clean_time = datetime.strptime(clean_time,'%M:%S.%f').time()
+
+                    try:
+                        dirty_time = datetime.strptime(dirty_time,'%M:%S.%f').time()
+                        clean_time = timedelta(minutes=dirty_time.minute, seconds=dirty_time.second, milliseconds=dirty_time.microsecond)
+                    except:
+                        dirty_time = datetime.strptime(dirty_time,'%S.%f').time()
+                        clean_time = timedelta(seconds=dirty_time.second, milliseconds=dirty_time.microsecond)
+
+                else:
+                    mill = dt.timedelta(milliseconds=int(dirty_time.split('.',1)[1]))
+                    sec = dt.timedelta(seconds=int(dirty_time[:2]))
+                    clean_time = sec + mill
+
+                #print(race['Results'][0]['status'], race['season'] ,race['round'],clean_time, race['Circuit']['circuitId'], race['Results'][0]['Driver']['driverId'])
+                
+                '''Get 1st place time and make it a timedelta object'''
+                x = laptime_df.loc[i]['time'].item()
+                try:
+                    y = datetime.strptime(x,'%I:%M:%S.%f').time()
+                    first_time = timedelta(hours=y.hour, minutes=y.minute, seconds=y.second, milliseconds=y.microsecond)
+                except:
+                    y = datetime.strptime(x,'%M:%S.%f').time()
+                    first_time = timedelta(minutes=y.minute, seconds=y.second, milliseconds=y.microsecond)
+
+                '''Add time to 1st place time to get track_time'''
+                track_time = clean_time + first_time
+                #print( track_time, race['season'] ,race['round'], race['Circuit']['circuitId'], race['Results'][0]['Driver']['driverId'])
+                print(f" {first_time}  |  {x}  |  {race['season']} {race['round']} {race['Circuit']['circuitId']} {race['Results'][0]['Driver']['driverId']}")
+
             else:
-                print('NO DICT TIME')
+                '''Time dictionary does NOT exist if NOT Finished'''
+                #print(race['Results'][0]['status'])
                 pass
+
+        
