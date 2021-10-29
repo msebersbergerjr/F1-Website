@@ -1,4 +1,4 @@
-djagno
+django
 requests
 pandas
 tqdm
