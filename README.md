@@ -22,7 +22,7 @@ Coming Soon.
 
 ### The production build is coming soon!
 #### Desktop View
-
+[![github-f1preview.png](https://i.postimg.cc/ncrykd6B/github-f1preview.png)](https://postimg.cc/9r3gXBXQ)
 
 ## Contributing
     
