@@ -1,0 +1,17 @@
+{% extends 'F1Website/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1> {{ constructor_data.name }} </h1>
+<h3> Base {{ constructor_data.points }} </h3>
+<h3> Team Chief {{ constructor_data.team_chief }} </h3>
+<h3> Technical Chief {{ constructor_data.technical_chief }} </h3>
+<h3> Chassis {{ constructor_data.chassis }} </h3>
+<h3> Power Unit {{ constructor_data.power_unit }} </h3>
+<h3> Entry {{ constructor_data.entry }} </h3>
+<h3> World Championships {{ constructor_data.world_championships }} </h3>
+<h2> {{constructor_data.driver_one}} {{constructor_data.driver_two}} </h2>
+
+
+{% endblock %}

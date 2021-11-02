@@ -1,0 +1,14 @@
+{% extends 'F1Website/base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% for team in constructor_data %}
+
+<h1>{{ team.name }}</h1>
+<h2>{{ team.points }}</h2>
+<h3>{{ team.driver_one }} & {{ team.driver_two }}</h3>
+
+{% endfor %}
+
+{% endblock %}

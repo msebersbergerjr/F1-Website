@@ -2,3 +2,4 @@ django
 requests
 pandas
 tqdm
+bs4
