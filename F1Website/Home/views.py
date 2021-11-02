@@ -71,7 +71,7 @@ def home(request):
     '''
 #<-------------------- Local Storage -------------------->
     #<---------- Reading ---------->
-    path = os.path.join("F1Website", "data")
+    path = os.path.join("data")
     to_file = os.path.join(path, 'current_standings.json')
 
     fileCheck(to_file)
@@ -93,7 +93,7 @@ def driver_page(request, pk):
     '''
 #<-------------------- Local Storage -------------------->
     #<---------- Reading ---------->
-    path = os.path.join("F1Website", "data")
+    path = os.path.join("data")
     to_file = os.path.join(path, 'current_standings.json')
 
     fileCheck(to_file)
@@ -101,7 +101,7 @@ def driver_page(request, pk):
     with open(to_file) as json_file:
         driver_data = json.load(json_file)
 
-    path = os.path.join("F1Website", "data", "results")
+    path = os.path.join("data", "results")
     to_file = os.path.join(path, f'{pk}_results.json')
 
     fileCheck(to_file)
@@ -136,7 +136,7 @@ def performence_histroy(request, pk):
     '''
     Read laptime into dataframe
     '''
-    path = os.path.join("F1Website", "data")
+    path = os.path.join("data")
     to_file = os.path.join(path, 'laptime.csv')
     dot = 'csv'
 
@@ -145,7 +145,7 @@ def performence_histroy(request, pk):
     laptime_df = pd.read_csv(to_file)
 
     '''Get selected drivers race history'''
-    path = os.path.join("F1Website","data", "results")
+    path = os.path.join("data", "results")
     # to_file = os.path.join(path, f'{pk}_results.json')
 
     #<---------- Testing ---------->

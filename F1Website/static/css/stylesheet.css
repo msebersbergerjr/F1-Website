@@ -1,11 +1,13 @@
 @font-face {
     font-family: formulaOneBold;
     src: url(../fonts/Formula1-Bold.ttf);
+    font-display: swap;
 }
 
 @font-face {
     font-family: formulaOneRegular;
     src: url(../fonts/Formula1-Regular.ttf);
+    font-display: swap;
 }
 
 a {
@@ -55,8 +57,8 @@ a:hover {
 }
 
 .driverimg {
-    width: 550px;
-    height: 500px;
+    max-width: 100%;
+    height: auto;
     object-fit: cover;
     border-style: solid;
     border-color: black;
@@ -109,7 +111,6 @@ a:hover {
 }
 
 .driver-flg {
-    height: 90px;
     border-style: solid;
     border-color: black;
     border-width: 1px;
@@ -259,4 +260,13 @@ a:hover {
     font-weight: bold;
     font-size: 55px;
     margin-bottom: 20px;
+}
+
+footer {
+    font-family: formulaOneBold;
+    text-align: center;
+}
+
+footer a:hover {
+    color: rgb(223, 223, 223);
 }
