@@ -85,6 +85,52 @@ def home(request):
 
     return render(request, 'Home/home.html', context)
 
+def constructor_home(request):
+    '''
+    @return: constructor information for current constructors & drivers for team
+    '''
+
+    #<---------- Reading ---------->
+    path = os.path.join("F1Website", "data")
+    to_file = os.path.join(path, 'current_constructor.json')
+
+    fileCheck(to_file)
+
+    with open(to_file) as json_file:
+        constructor_data = json.load(json_file)
+
+    context = {
+        'constructor_data': constructor_data
+    }
+
+    return render(request, 'Home/constructor_home.html', context)
+
+def constructor_page(request, pk):
+    '''
+    @return: current team information for each team
+    @parms pk = constructorId
+    '''
+#<-------------------- Local Storage -------------------->
+    #<---------- Reading ---------->
+    path = os.path.join("F1Website", "data")
+    to_file = os.path.join(path, 'current_constructor.json')
+
+    fileCheck(to_file)
+
+    with open(to_file) as json_file:
+        constructor_data = json.load(json_file)
+
+    count = 0
+    for i in constructor_data:
+        if i['constructorId'] == pk:
+            break
+        count += 1
+
+    context = {
+        'constructor_data': constructor_data[count]
+    }
+
+    return render(request, 'Home/constructor_page.html', context)
 
 def driver_page(request, pk):
     '''
@@ -127,7 +173,6 @@ def driver_page(request, pk):
 
     return render(request, 'Home/driver_page.html', context)
 
-#TODO
 def performence_histroy(request, pk):
 
     year = []
