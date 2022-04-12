@@ -1,0 +1,16 @@
+{% block content %}
+
+<form class="mt-5" id="season-form">
+    {% csrf_token %}
+    <div class="season dropdown" id="seasons">
+        <input type="hidden" name="season">
+        <div>Seasons</div>
+        <div class="menu">
+            {% for season in seasons %}
+                <div class="item" data-value="{{season}}">{{season}}</div>
+            {% endfor %}
+        </div>
+    </div>
+</form>
+
+{% endblock content %}

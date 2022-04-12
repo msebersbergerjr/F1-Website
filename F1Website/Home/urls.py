@@ -6,4 +6,5 @@ urlpatterns = [
     path('current/constructors/', views.constructor_home),
     path('constructor/<str:pk>/', views.constructor_page),
     path('<str:pk>/', views.driver_page),
+    path('getracehistory/', views.get_race_history)
 ]

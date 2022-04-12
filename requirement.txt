@@ -1,5 +1,5 @@
 django
 requests
 pandas
-tqdm
-bs4
+black
+ipykernel
