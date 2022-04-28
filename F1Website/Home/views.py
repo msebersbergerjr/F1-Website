@@ -1,27 +1,31 @@
 import json, os, io
+import pandas as pd
+from django.db.models import Sum
 from django.http import JsonResponse
 from django.views import View
-import pandas as pd
 from django.shortcuts import render
-from urllib3 import HTTPResponse
 from Home import models
 
 # <-------------------- Misc -------------------->
-"""
-Check if file exist & if not create one
-"""
-def fileCheck(path):
-    if not os.path.isfile(path) and os.access(path, os.R_OK):
-        with io.open(os.path.join(path), "w") as outfile:
-            outfile.write(json.dumps({}))\
-
 def is_ajax(request):
+    """
+    is_ajax got deprecated, so I made my own
+    """
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
+# <-------------------- Lineup Page -------------------->
 def lineup_page(request, pk):
-    
-    data_dirty = models.Driver_Standing.objects.filter(season=pk).order_by('-points').values('driver_id','team_id','points','wins')
+    """
+    @parm: select year
+    @returns: 
+    information the lineup page needs for the cards
+    Current selected year
+    years to choose from for dropdown
+    """
 
+    # Get ordered list by MOST points of drivers within the selected year
+    # Clean it and organize it in a way for the html to easily read
+    data_dirty = models.Driver_Standing.objects.filter(season=pk).order_by('-points').values('driver_id','team_id','points','wins')
     data_clean = []
 
     for _ in data_dirty:
@@ -47,89 +51,40 @@ def lineup_page(request, pk):
 
     return render(request, "Home/lineup_page.html", context)
     
-
-def home(request):
-
-    return render(request, "Home/home.html")
-
-
-def constructor_home(request):
+# <-------------------- Landing Page -------------------->
+def landing(request):
     """
-    @return: constructor information for current constructors & drivers for team
+    Landing Page
     """
+    return render(request, "Home/landing.html")
 
-    # <---------- Reading ---------->
-    path = os.path.join("F1Website", "data")
-    to_file = os.path.join(path, "current_constructor.json")
-
-    fileCheck(to_file)
-
-    with open(to_file) as json_file:
-        constructor_data = json.load(json_file)
-
-    context = {"constructor_data": constructor_data}
-
-    return render(request, "Home/constructor_home.html", context)
-
-
-def constructor_page(request, pk):
-    """
-    @return: current team information for each team
-    @parms pk = constructorId
-    """
-    # <-------------------- Local Storage -------------------->
-    # <---------- Reading ---------->
-    path = os.path.join("F1Website", "data")
-    to_file = os.path.join(path, "current_constructor.json")
-
-    fileCheck(to_file)
-
-    with open(to_file) as json_file:
-        constructor_data = json.load(json_file)
-
-    count = 0
-    for i in constructor_data:
-        if i["constructorId"] == pk:
-            break
-        count += 1
-
-    context = {"constructor_data": constructor_data[count]}
-
-    return render(request, "Home/constructor_page.html", context)
-
-
+# <-------------------- Driver Page -------------------->
 def driver_page(request, pk):
     """
-    @return: current standings and race results for each driver
-    @parms pk = driverId
-    # """
-    # <-------------------- Local Storage -------------------->
-    # <---------- Reading ---------->
-    path = os.path.join("F1Website", "data")
-    to_file = os.path.join(path, "current_standings.json")
-
-    fileCheck(to_file)
-
-    with open(to_file) as json_file:
-        driver_data = json.load(json_file)
-
+    @parm: driver_id
+    @returns:
+    Driver related information from models
+    Points from models
+    Wins from models
     """
-    Search driverID until it matches with PK which is the driverID
-    of the selected driver
-    """
-    count = 0
-    for i in driver_data:
 
-        if i["Driver"]["driverId"] == pk:
-            break
-        count += 1
+    data_dirty = models.Driver.objects.filter(driver_id=pk).values('permanentNumber','givenName','familyName','nationality','dateOfBirth')
+    points = models.Driver_Standing.objects.filter(driver_id=pk).aggregate(Sum('points'))
+    wins = models.Driver_Standing.objects.filter(driver_id=pk).aggregate(Sum('wins'))
 
-    context = {"driver_data": driver_data[count]}
+    for _ in data_dirty:
+        driver_data = {
+        'givenName': _['givenName'],
+        'familyName': _['familyName'],
+        'permanentNumber': _['permanentNumber'],
+        'points': points['points__sum'],
+        'wins': wins['wins__sum'],
+        'nationality': _['nationality'],
+        'dateOfBirth':_['dateOfBirth']
+        }
+
+    context = {
+        'driver_data':driver_data
+    }
 
     return render(request, "Home/driver_page.html", context)
-
-def get_race_history(request):
-
-    seasons = ['2022','2021','2000']
-
-    return render(request, "Home/race_history.html", {'seasons':seasons})

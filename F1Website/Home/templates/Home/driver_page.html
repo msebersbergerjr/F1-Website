@@ -8,7 +8,7 @@
     <!-- Top Span -->
     <div class="row">
         <div class="col-12 top-span">
-            <h2 class="driver-name">{{driver_data.Driver.givenName}} {{driver_data.Driver.familyName}}</h2>
+            <h2 class="driver-name">{{driver_data.givenName}} {{driver_data.familyName}}</h2>
         </div>
     </div>
 
@@ -17,7 +17,7 @@
     <div class="row">
         <!-- Driver Photo -->
         <div class="col-6">
-            <img class="driverimg" src="{% static 'images/' %}{{driver_data.Driver.familyName|add:'_Profile.jpeg'}}"
+            <img class="driverimg" src="{% static 'images/' %}{{driver_data.familyName|add:'_Profile.jpeg'}}"
                 alt="">
         </div>
 
@@ -25,13 +25,13 @@
             <div class="row">
                 <!-- Helmet photo -->
                 <div class="col-9 driver-helm">
-                    <img src="{% static 'images/' %}{{driver_data.Driver.familyName|add:'_Helmet.png'}}" alt=""
+                    <img src="{% static 'images/' %}{{driver_data.familyName|add:'_Helmet.png'}}" alt=""
                         height="250">
                 </div>
                 <div class="col-3 flag-box">
-                    <img class="driver-flg" src="{% static 'images/' %}{{driver_data.Driver.nationality|add:'.jpeg'}}"
+                    <img class="driver-flg" src="{% static 'images/' %}{{driver_data.nationality|add:'.jpeg'}}"
                         alt="">
-                    <h4 class="driver-num">{{driver_data.Driver.permanentNumber}}</h4>
+                    <h4 class="driver-num">{{driver_data.permanentNumber}}</h4>
                     <!-- <img src="../../../static/images/33.png" height="70" /> -->
                 </div>
                 <div class="col-12">
@@ -42,25 +42,19 @@
                             <tbody>
                                 <tr>
                                     <th>
-                                        <span class="text">Team</span>
-                                    </th>
-                                    <td>{{driver_data.Constructors.0.name}}</td>
-                                </tr>
-                                <tr>
-                                    <th>
                                         <span class="text">Country</span>
                                     </th>
-                                    <td>{{driver_data.Driver.nationality}}</td>
+                                    <td>{{driver_data.nationality}}</td>
                                 </tr>
                                 <tr>
                                     <th>
-                                        <span class="text">Wins</span>
+                                        <span class="text">Career Wins</span>
                                     </th>
                                     <td>{{driver_data.wins}}</td>
                                 </tr>
                                 <tr>
                                     <th>
-                                        <span class="text">Points</span>
+                                        <span class="text">Career Points</span>
                                     </th>
                                     <td>{{driver_data.points}}</td>
                                 </tr>
@@ -68,7 +62,7 @@
                                     <th>
                                         <span class="text">Date of Birth</span>
                                     </th>
-                                    <td>{{driver_data.Driver.dateOfBirth}}</td>
+                                    <td>{{driver_data.dateOfBirth}}</td>
                                 </tr>
                             </tbody>
                         </table>
