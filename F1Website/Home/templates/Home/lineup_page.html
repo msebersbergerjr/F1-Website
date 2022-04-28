@@ -1,0 +1,64 @@
+{% extends 'F1Website/base.html' %}
+{% load static %}
+<!-- TODO:
+Spacing between drivers
+Hover border with color of driver team -->
+
+{% block content %}
+
+<select id="season-dropdown" name="seasons">
+    <option>Year</option>
+    {% for year in seasons %}
+    <option value="http://127.0.0.1:8000/lineup/{{year.season}}">{{year.season}}</option>
+    {% endfor %}
+</select>
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+    $(function(){
+        $('#season-dropdown').on('change', function(){
+            var url = $(this).val()
+            console.log(url)
+            if(url){
+                window.location = url
+            }
+            return false
+        })
+    })
+</script>
+
+<div class="container">
+    <h2 class="header-title">F1 Drivers {{year}}</h2>
+
+    <div class="row g-4">
+        {% for driver in drivers %}
+
+        {% if forloop.counter <= 3 %} 
+
+        <div class="col-lg-4 col-md-6 col-sm-12">
+
+        {% else %}
+
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12" style="align-content: center;">
+                {% endif %}
+                <a href="http://127.0.0.1:8000/{{driver.driver_id}}/">
+
+                    <div class="card" id="{{driver.team_id}}">
+                        <div class="card-banner"
+                            style=" background-image: url( '{% static 'images/' %}{{driver.team_id|add:'_card.png'}}' );">
+                            <img src="{% static 'images/' %}{{driver.familyName|add:'.png'}}" class="card-driver"
+                                onerror="this.onerror=null;this.src='{% static 'images/default.png' %}';"/>
+                        </div>
+
+                        <div class="card-body row">
+                            <div class="col-12 card-title">
+                                <div class="card-position">{{ driver.points }} <span class="card-name">{{ driver.familyName }}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+    </div>
+</div>
+{% endblock %}

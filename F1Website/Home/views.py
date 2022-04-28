@@ -1,54 +1,56 @@
-import json, operator, requests, os, io
+import json, os, io
+from django.http import JsonResponse
+from django.views import View
 import pandas as pd
-from django.http.request import HttpHeaders
-from django.http import response
 from django.shortcuts import render
-import datetime as dt
-from datetime import datetime, timedelta
+from urllib3 import HTTPResponse
+from Home import models
 
 # <-------------------- Misc -------------------->
 """
 Check if file exist & if not create one
 """
-
-
 def fileCheck(path):
     if not os.path.isfile(path) and os.access(path, os.R_OK):
         with io.open(os.path.join(path), "w") as outfile:
-            outfile.write(json.dumps({}))
+            outfile.write(json.dumps({}))\
 
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
-"""
-Orders by lexicographical order, so we get value 
-& cast as int
-"""
+def lineup_page(request, pk):
+    
+    data_dirty = models.Driver_Standing.objects.filter(season=pk).order_by('-points').values('driver_id','team_id','points','wins')
 
+    data_clean = []
 
-def get_season(result_data):
-    return int(result_data.get("season"))
+    for _ in data_dirty:
+        extra = models.Driver.objects.filter(driver_id=_['driver_id']).values('permanentNumber','givenName','familyName','nationality')
 
+        driver = {
+            'driver_id': _['driver_id'],
+            'givenName': extra[0]['givenName'],
+            'familyName': extra[0]['familyName'],
+            'permanentNumber': extra[0]['permanentNumber'],
+            'team_id': _['team_id'],
+            'points': _['points'],
+            'wins': _['wins'],
+            'nationality': extra[0]['nationality'],
+        }
+        data_clean.append(driver)
+    
+    context = {
+        'year': pk,
+        'drivers': data_clean,
+        'seasons': models.Driver_Standing.objects.order_by('-season').values('season').distinct()
+    }
 
-def get_round(result_data):
-    return int(result_data.get("round"))
-
+    return render(request, "Home/lineup_page.html", context)
+    
 
 def home(request):
-    """
-    @return: driver information for current standings
-    """
-    # <-------------------- Local Storage -------------------->
-    # <---------- Reading ---------->
-    path = os.path.join("F1Website", "data")
-    to_file = os.path.join(path, "current_standings.json")
 
-    fileCheck(to_file)
-
-    with open(to_file) as json_file:
-        driver_data = json.load(json_file)
-
-    context = {"driver_data": driver_data}
-
-    return render(request, "Home/home.html", context)
+    return render(request, "Home/home.html")
 
 
 def constructor_home(request):
