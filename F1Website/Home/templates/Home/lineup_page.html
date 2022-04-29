@@ -6,29 +6,16 @@ Hover border with color of driver team -->
 
 {% block content %}
 
-<select id="season-dropdown" name="seasons">
-    <option>Year</option>
-    {% for year in seasons %}
-    <option value="http://127.0.0.1:8000/lineup/{{year.season}}">{{year.season}}</option>
-    {% endfor %}
-</select>
-
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-<script>
-    $(function(){
-        $('#season-dropdown').on('change', function(){
-            var url = $(this).val()
-            console.log(url)
-            if(url){
-                window.location = url
-            }
-            return false
-        })
-    })
-</script>
-
 <div class="container">
     <h2 class="header-title">F1 Drivers {{year}}</h2>
+
+
+    <select id="season-dropdown" name="seasons">
+        <option>Year</option>
+        {% for year in seasons %}
+        <option value="http://127.0.0.1:8000/lineup/{{year.season}}">{{year.season}}</option>
+        {% endfor %}
+    </select>
 
     <div class="row g-4">
         {% for driver in drivers %}
@@ -41,7 +28,7 @@ Hover border with color of driver team -->
 
             <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12" style="align-content: center;">
                 {% endif %}
-                <a href="http://127.0.0.1:8000/{{driver.driver_id}}/">
+                <a href="http://127.0.0.1:8000/driver/{{driver.driver_id}}/">
 
                     <div class="card" id="{{driver.team_id}}">
                         <div class="card-banner"
@@ -61,4 +48,19 @@ Hover border with color of driver team -->
             {% endfor %}
     </div>
 </div>
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+    $(function(){
+        $('#season-dropdown').on('change', function(){
+            var url = $(this).val()
+            console.log(url)
+            if(url){
+                window.location = url
+            }
+            return false
+        })
+    })
+</script>
+
 {% endblock %}

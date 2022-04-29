@@ -1,16 +1,58 @@
 {% block content %}
-
-<form class="mt-5" id="season-form">
-    {% csrf_token %}
-    <div class="season dropdown" id="seasons">
-        <input type="hidden" name="season">
-        <div>Seasons</div>
-        <div class="menu">
-            {% for season in seasons %}
-                <div class="item" data-value="{{season}}">{{season}}</div>
+<div class="row">
+    <div class="col">
+        <select onchange="season(this.value);">
+            <option value="" selected disabled>Season</option>
+            {% for year in season %}
+            <option value="{{year.season}}">{{year.season}}</option>
             {% endfor %}
+        </select>
+        <select onchange="circuit_id(this.value);">
+            <option value="" selected disabled>Circuit</option>
+            {% for track in circuit_id %}
+            <option value="{{track.circuit_id}}">{{track.circuit_id}}</option>
+            {% endfor %}
+        </select>
+        <select onchange="team_id(this.value);">
+            <option value="" selected disabled>Constructor</option>
+            {% for team in teams %}
+            <option value="{{team.team_id}}">{{team.team_id}}</option>
+            {% endfor %}
+        </select>
+        <select onchange="status(this.value);">
+            <option value="" selected disabled>Status</option>
+            {% for status in statuses %}
+            <option value="{{status.status}}">{{status.status}}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="results">
+            <table class="table", id="myTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Season</th>
+                        <th scope="col">Round</th>
+                        <th scope="col">Circuit</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Constructor</th>
+                        <th scope="col">Position</th>
+                        <th scope="col">Points</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Track Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
-</form>
+</div>
+
+{% load static %}
+<script type="text/javascript" src="{% static 'race_history.js' %}"></script>
 
 {% endblock content %}

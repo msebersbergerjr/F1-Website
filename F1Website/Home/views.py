@@ -1,10 +1,12 @@
-import json, os, io
-import pandas as pd
+import re
+from statistics import mode
 from django.db.models import Sum
 from django.http import JsonResponse
-from django.views import View
 from django.shortcuts import render
 from Home import models
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import Race_History_Serializers
 
 # <-------------------- Misc -------------------->
 def is_ajax(request):
@@ -84,7 +86,47 @@ def driver_page(request, pk):
         }
 
     context = {
-        'driver_data':driver_data
+        'driver_data':driver_data,
+        'season': models.Race_History.objects.filter(driver_id=pk).order_by('-season').values('season').distinct(),
+        'circuit_id': models.Race_History.objects.filter(driver_id=pk).values('circuit_id').distinct(),
+        'teams': models.Race_History.objects.filter(driver_id=pk).values('team_id').distinct(),
+        'statuses': models.Race_History.objects.filter(driver_id=pk).values('status').distinct()
     }
 
     return render(request, "Home/driver_page.html", context)
+
+@api_view(['GET'])
+def get_race_history(request,pk):
+    season = request.query_params.get('season',None)
+    circuit_id = request.query_params.get('circuit_id',None)
+    team_id = request.query_params.get('team_id',None)
+    status = request.query_params.get('status',None)
+    race = models.Race_History.objects.filter(driver_id=pk).values('season','round','circuit_id','date','team_id','position','points','status','true_time')
+    data = []
+    if season:
+        race = race.filter(season=season).order_by('-round')
+    if circuit_id:
+        race = race.filter(circuit_id=circuit_id).order_by('-season')
+    if team_id:
+        race = race.filter(team_id=team_id)
+    if status:
+        race = race.filter(status=status)
+    if race:
+        for _ in race:
+            circuit_id = models.Circuit.objects.filter(circuit_id=_['circuit_id']).values('circuit_name')
+            item = {
+                'season':_['season'],
+                'round': _['round'],
+                'circuit_id': circuit_id[0]['circuit_name'] ,
+                'date':_['date'],
+                'team_id':_['team_id'],
+                'position':_['position'],
+                'points':_['points'],
+                'status':_['status'],
+                'true_time':_['true_time'],
+            }
+            data.append(item)
+        serialized = Race_History_Serializers(data, many=True)
+        return Response(serialized.data)
+    else:
+        return Response({})

@@ -3,3 +3,4 @@ requests
 pandas
 black
 ipykernel
+django_rest_framework
