@@ -1,15 +1,12 @@
 {% extends 'F1Website/base.html' %}
 {% load static %}
-<!-- TODO:
-Spacing between drivers
-Hover border with color of driver team -->
-
 {% block content %}
 
 <div class="container">
-    <h2 class="header-title">F1 Drivers {{year}}</h2>
+    <h2 class="header-title">{{year}} DRIVERS</h2>
 
 
+    <!-- Filter by Year -->
     <select id="season-dropdown" name="seasons">
         <option>Year</option>
         {% for year in seasons %}
@@ -17,9 +14,11 @@ Hover border with color of driver team -->
         {% endfor %}
     </select>
 
+    <!-- Card Layout -->
     <div class="row g-4">
         {% for driver in drivers %}
 
+        <!-- Top 3 are stood out -->
         {% if forloop.counter <= 3 %} 
 
         <div class="col-lg-4 col-md-6 col-sm-12">

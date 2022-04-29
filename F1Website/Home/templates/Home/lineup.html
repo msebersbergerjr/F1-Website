@@ -1,0 +1,30 @@
+{% extends 'F1Website/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<form class="mt-5" id="season-form">
+    {% csrf_token %}
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ title.season }}
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            {% for year in standing_list %}
+                <li><a class="dropdown-item" data-value="{{ year.season }}">{{ year.season }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</form>
+
+<script>
+    $('.btn btn-secondary dropdown-toggle').on('click', function(){
+        $.ajax({
+            success: function(){
+                console.log('test');
+            }
+        })
+    })
+</script>
+
+{% endblock %}
