@@ -3,12 +3,9 @@ from Home import views
 
 urlpatterns = [
     path('', views.landing),
-    path('lineup/<str:pk>/', views.lineup_page),
+    path('drivers/<str:pk>/', views.drivers_page),
     path('driver/<str:pk>/', views.driver_page),
     path('driver/<str:pk>/ajax/race-history/', views.get_race_history),
-    # path("ajax/circuit/", getCircuit, name='get_circuit'),
-    # path("ajax/date/", getDate, name='get_date'),
-    # path("ajax/team/", getTeam, name='get_team'),
-    # path("ajax/position/", getPosition, name='get_position'),
-    # path("ajax/status/", getStatus, name='get_status'),
+    path('teams/<str:pk>', views.teams_page),
+    path('team/<str:pk>/', views.team_page),
 ]

@@ -15,8 +15,15 @@ def is_ajax(request):
     """
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
-# <-------------------- Lineup Page -------------------->
-def lineup_page(request, pk):
+# <-------------------- Landing Page -------------------->
+def landing(request):
+    """
+    Landing Page
+    """
+    return render(request, "Home/landing.html")
+
+# <-------------------- Drivers Page -------------------->
+def drivers_page(request, pk):
     """
     @parm: select year
     @returns: 
@@ -51,14 +58,8 @@ def lineup_page(request, pk):
         'seasons': models.Driver_Standing.objects.order_by('-season').values('season').distinct()
     }
 
-    return render(request, "Home/lineup_page.html", context)
+    return render(request, "Home/drivers_page.html", context)
     
-# <-------------------- Landing Page -------------------->
-def landing(request):
-    """
-    Landing Page
-    """
-    return render(request, "Home/landing.html")
 
 # <-------------------- Driver Page -------------------->
 def driver_page(request, pk):
@@ -85,13 +86,26 @@ def driver_page(request, pk):
         'dateOfBirth':_['dateOfBirth']
         }
 
+    # Circuit_ID for value; Circuit_Name for Display
+    circuit_dirty = models.Race_History.objects.filter(driver_id=pk).order_by('circuit_id').values('circuit_id').distinct()
+    circuits = []
+    for _ in circuit_dirty:
+        circuits.append(models.Circuit.objects.filter(circuit_id=_['circuit_id']).values('circuit_id','circuit_name'))
+
+    # Team_ID for value; Team_Name for Display
+    team_dirty = models.Race_History.objects.filter(driver_id=pk).order_by('team_id').values('team_id').distinct()
+    teams = []
+    for _ in team_dirty:
+        teams.append(models.Constructor.objects.filter(team_id=_['team_id']).values('team_id','team_name'))
+
     context = {
         'driver_data':driver_data,
         'season': models.Race_History.objects.filter(driver_id=pk).order_by('-season').values('season').distinct(),
-        'circuit_id': models.Race_History.objects.filter(driver_id=pk).values('circuit_id').distinct(),
-        'teams': models.Race_History.objects.filter(driver_id=pk).values('team_id').distinct(),
+        'circuits': circuits,
+        'teams':teams,
         'statuses': models.Race_History.objects.filter(driver_id=pk).values('status').distinct()
     }
+        
 
     return render(request, "Home/driver_page.html", context)
 
@@ -101,7 +115,7 @@ def get_race_history(request,pk):
     circuit_id = request.query_params.get('circuit_id',None)
     team_id = request.query_params.get('team_id',None)
     status = request.query_params.get('status',None)
-    race = models.Race_History.objects.filter(driver_id=pk).values('season','round','circuit_id','date','team_id','position','points','status','true_time')
+    race = models.Race_History.objects.filter(driver_id=pk).values('season','round','circuit_id','date','team_id','position','points','status')
     data = []
     if season:
         race = race.filter(season=season).order_by('-round')
@@ -123,10 +137,81 @@ def get_race_history(request,pk):
                 'position':_['position'],
                 'points':_['points'],
                 'status':_['status'],
-                'true_time':_['true_time'],
             }
             data.append(item)
         serialized = Race_History_Serializers(data, many=True)
         return Response(serialized.data)
     else:
         return Response({})
+
+# <-------------------- Teams Page -------------------->
+def teams_page(request, pk):
+
+    data_dirty = models.Constructor_Standing.objects.filter(season=pk).order_by('-points').values('team_id', 'points')
+    data_clean = []
+
+    for _ in data_dirty:
+        team_name = models.Constructor.objects.filter(team_id=_['team_id']).values('team_name')
+        drivers_dirty = models.Driver_Standing.objects.filter(season=pk,team_id=_['team_id']).values('driver_id').distinct()
+
+        # Get ever driver who drove for the team in season
+        drivers_clean = []
+        for i in drivers_dirty:
+            drivers_name = models.Driver.objects.filter(driver_id=i['driver_id']).values('givenName','familyName')
+
+            driver = {
+                'givenName': drivers_name[0]['givenName'],
+                'familyName': drivers_name[0]['familyName']
+            }
+            drivers_clean.append(driver)
+
+        teams = {
+            'team_id': _['team_id'],
+            'team_name': team_name[0]['team_name'],
+            'points': _['points'],
+            'drivers': drivers_clean
+        }
+        data_clean.append(teams)
+    
+    
+    context = {
+        'year': pk,
+        'teams': data_clean,
+        'seasons': models.Constructor_Standing.objects.order_by('-season').values('season').distinct()
+    }
+
+    return render(request, "Home/teams_page.html", context)
+
+def team_page(request,pk):
+
+    data_dirty = models.Constructor.objects.filter(team_id=pk).values('team_id','team_name','nationality')
+    points = models.Constructor_Standing.objects.filter(team_id=pk).aggregate(Sum('points'))
+    wins = models.Constructor_Standing.objects.filter(team_id=pk).aggregate(Sum('wins'))
+    drivers_dirty = models.Driver_Standing.objects.order_by('-season').filter(team_id=pk).values('driver_id')[:2]
+    drivers = []
+
+
+    for _ in drivers_dirty:
+        drivers_name = models.Driver.objects.filter(driver_id=_['driver_id']).values('givenName','familyName','driver_id')
+        driver = {
+            'driver_id': drivers_name[0]['driver_id'],
+            'givenName': drivers_name[0]['givenName'],
+            'familyName': drivers_name[0]['familyName']
+        }
+        drivers.append(driver)
+
+    for _ in data_dirty:
+        team_data ={
+            'team_id': _['team_id'],
+            'team_name': _['team_name'],
+            'points': points['points__sum'],
+            'wins': wins['wins__sum'],
+            'nationality': _['nationality'],
+            'drivers': drivers,
+        }
+    
+    context = {
+        'team_data': team_data
+    }
+
+    return render(request, "Home/team_page.html", context)

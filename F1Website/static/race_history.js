@@ -15,11 +15,6 @@ function send_request(param) {
     });
 }
 
-function all(){
-    let param = 'all=True'
-    send_request
-}
-
 function season(season){
     let param = 'season='+ season
     send_request(param)
@@ -48,7 +43,7 @@ function update_table(data){
 
     Object.keys(data).forEach(key => {
         elem = data[key];
-        row = '<tr><td>' + elem['season'] + '</td>' + '<td>' + elem['round'] + '</td>'  + '<td>' + elem['circuit_id'] + '</td>' + '<td>' + elem['date'] + '</td>' + '<td>' + elem['team_id'] + '</td>' + '<td>' + elem['position'] + '</td>' + '<td>' + elem['points'] + '</td>' + '<td>' + elem['status'] + '</td>' + '<td>' + elem['true_time'] + '</td>' + '</tr>'
+        row = '<tr><td>' + elem['season'] + '</td>' + '<td>' + elem['round'] + '</td>'  + '<td>' + elem['circuit_id'] + '</td>' + '<td>' + elem['date'] + '</td>' + '<td>' + elem['team_id'] + '</td>' + '<td>' + elem['position'] + '</td>' + '<td>' + elem['points'] + '</td>' + '<td>' + elem['status'] + '</td>' + '</tr>'
         all_rows = all_rows + row;
     });
 

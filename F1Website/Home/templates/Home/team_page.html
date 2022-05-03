@@ -1,0 +1,44 @@
+{% extends 'F1Website/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 top-span">
+            <h2 class="driver-name">{{team_data.team_name}}</h2>
+        </div>
+        <span class="card-name">CURRENT DRIVERS</span>
+        <div class="col-6">
+            {% for driver in team_data.drivers %}
+            <a href="http://127.0.0.1:8000/driver/{{driver.driver_id}}/">
+                <span class="card-name">{{driver.givenName}} {{driver.familyName}}</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="info">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>
+                        <span class="text">Country</span>
+                    </th>
+                    <td>{{team_data.nationality}}</td>
+                </tr>
+                <tr>
+                    <th>
+                        <span class="text">Career Wins</span>
+                    </th>
+                    <td>{{team_data.wins}}</td>
+                </tr>
+                <tr>
+                    <th>
+                        <span class="text">Career Points</span>
+                    </th>
+                    <td>{{team_data.points}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

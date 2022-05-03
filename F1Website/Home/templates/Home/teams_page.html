@@ -1,0 +1,50 @@
+{% extends 'F1Website/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h2 class="header-title">{{year}} TEAMS</h2>
+
+    <!-- Filter by Year -->
+    <select id="season-dropdown" name="seasons">
+        <option>Year</option>
+        {% for year in seasons %}
+        <option value="http://127.0.0.1:8000/teams/{{year.season}}">{{year.season}}</option>
+        {% endfor %}
+    </select>
+
+    <div class="row g-2">
+        {% for team in teams %}
+        
+        <a href="http://127.0.0.1:8000/team/{{team.team_id}}/">
+            <div class="card" id="{{team.team_id}}">
+                <div class="card-body row">
+                    <div class="col-12 card-title">
+                        <div class="card-position">
+                            {{team.points}}
+                            <span class="card-name">{{ team.team_name }}</span>
+                            {% for driver in team.drivers %}
+                            <span class="card-name">{{ driver.givenName}} {{driver.familyName}}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+    $(function(){
+        $('#season-dropdown').on('change', function(){
+            var url = $(this).val()
+            console.log(url)
+            if(url){
+                window.location = url
+            }
+            return false
+        })
+    })
+</script>
+{% endblock %}

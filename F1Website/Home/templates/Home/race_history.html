@@ -9,14 +9,14 @@
         </select>
         <select onchange="circuit_id(this.value);">
             <option value="" selected disabled>Circuit</option>
-            {% for track in circuit_id %}
-            <option value="{{track.circuit_id}}">{{track.circuit_id}}</option>
+            {% for track in circuits %}
+            <option value="{{track.0.circuit_id}}">{{track.0.circuit_name}}</option>
             {% endfor %}
         </select>
         <select onchange="team_id(this.value);">
             <option value="" selected disabled>Constructor</option>
             {% for team in teams %}
-            <option value="{{team.team_id}}">{{team.team_id}}</option>
+            <option value="{{team.0.team_id}}">{{team.0.team_name}}</option>
             {% endfor %}
         </select>
         <select onchange="status(this.value);">
@@ -42,7 +42,6 @@
                         <th scope="col">Position</th>
                         <th scope="col">Points</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Track Time</th>
                     </tr>
                 </thead>
                 <tbody>
