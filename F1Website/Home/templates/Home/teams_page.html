@@ -5,10 +5,10 @@
     <h2 class="header-title">{{year}} TEAMS</h2>
 
     <!-- Filter by Year -->
-    <select id="season-dropdown" name="seasons">
+    <select id="season_dropdown" onchange="season_dropdown(this.value);">
         <option>Year</option>
         {% for year in seasons %}
-        <option value="http://127.0.0.1:8000/teams/{{year.season}}">{{year.season}}</option>
+        <option value="{{year.season}}">{{year.season}}</option>
         {% endfor %}
     </select>
 
@@ -32,19 +32,12 @@
         </a>
         {% endfor %}
     </div>
-</div>
 
-<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-<script>
-    $(function(){
-        $('#season-dropdown').on('change', function(){
-            var url = $(this).val()
-            console.log(url)
-            if(url){
-                window.location = url
-            }
-            return false
-        })
-    })
-</script>
+    <div>
+        <canvas id="seasonChart"></canvas>
+    </div>
+    
+</div>
+{% load static %}
+<script type="text/javascript" src="{% static 'teams_page.js' %}"></script>
 {% endblock %}

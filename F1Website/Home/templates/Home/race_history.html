@@ -1,5 +1,5 @@
 {% block content %}
-<div class="row">
+<!-- <div class="row">
     <div class="col">
         <select onchange="season(this.value);">
             <option value="" selected disabled>Season</option>
@@ -26,7 +26,7 @@
             {% endfor %}
         </select>
     </div>
-</div>
+</div> -->
 
 <div class="row">
     <div class="col-12">
@@ -34,14 +34,42 @@
             <table class="table", id="myTable">
                 <thead>
                     <tr>
-                        <th scope="col">Season</th>
+                        <th scope="col">
+                            <select id="Season" onchange="season(this.value);">
+                                <option value="" selected disabled>Season</option>
+                                {% for year in season %}
+                                <option value="{{year.season}}">{{year.season}}</option>
+                                {% endfor %}
+                            </select>
+                        </th>
                         <th scope="col">Round</th>
-                        <th scope="col">Circuit</th>
+                        <th scope="col">
+                            <select id="Circuit" onchange="circuit_id(this.value);">
+                                <option value="" selected disabled>Circuit</option>
+                                {% for track in circuits %}
+                                <option value="{{track.0.circuit_id}}">{{track.0.circuit_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </th>
                         <th scope="col">Date</th>
-                        <th scope="col">Constructor</th>
+                        <th scope="col">
+                            <select id="Constructor" onchange="team_id(this.value);">
+                                <option value="" selected disabled>Constructor</option>
+                                {% for team in teams %}
+                                <option value="{{team.0.team_id}}">{{team.0.team_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </th>
                         <th scope="col">Position</th>
                         <th scope="col">Points</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">
+                            <select id="Status" onchange="status(this.value);">
+                                <option value="" selected disabled>Status</option>
+                                {% for status in statuses %}
+                                <option value="{{status.status}}">{{status.status}}</option>
+                                {% endfor %}
+                            </select>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>

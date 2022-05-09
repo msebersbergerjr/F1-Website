@@ -1,0 +1,18 @@
+{% block content %}
+<div class="row">
+
+    <select onchange="circuit_id_chart(this.value);">
+        <option value="" selected disabled>Circuit</option>
+        {% for track in circuits %}
+        <option value="{{track.0.circuit_id}}">{{track.0.circuit_name}}</option>
+        {% endfor %}
+    </select>
+
+    <canvas id="myChart"></canvas>
+</div>
+
+{% load static %}
+<script type="text/javascript" src="{% static 'driver_chart.js' %}"></script>
+
+
+{% endblock content %}
