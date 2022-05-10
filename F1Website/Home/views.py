@@ -211,14 +211,24 @@ def get_season_team_points_chart(request):
     return JsonResponse({'labels':labels,'data':data})
 
 # <-------------------- Teams Page -------------------->
-def teams_page(request, pk):
+def teams_page(request):
 
-    data_dirty = models.Constructor_Standing.objects.filter(season=pk).order_by('-points').values('team_id', 'points')
+    context = {
+        'seasons': models.Constructor_Standing.objects.order_by('-season').values('season').distinct()
+    }
+
+    return render(request, "Home/teams_page.html", context)
+
+@api_view(['GET'])
+def teams_page_ajax(request):
+    season = request.query_params.get('season',None)
+
+    data_dirty = models.Constructor_Standing.objects.filter(season=season).order_by('-points').values('team_id', 'points')
     data_clean = []
 
     for _ in data_dirty:
         team_name = models.Constructor.objects.filter(team_id=_['team_id']).values('team_name')
-        drivers_dirty = models.Driver_Standing.objects.filter(season=pk,team_id=_['team_id']).values('driver_id').distinct()
+        drivers_dirty = models.Driver_Standing.objects.filter(season=season,team_id=_['team_id']).values('driver_id').distinct()
 
         # Get ever driver who drove for the team in season
         drivers_clean = []
@@ -238,15 +248,9 @@ def teams_page(request, pk):
             'drivers': drivers_clean
         }
         data_clean.append(teams)
-    
-    
-    context = {
-        'year': pk,
-        'teams': data_clean,
-        'seasons': models.Constructor_Standing.objects.order_by('-season').values('season').distinct()
-    }
 
-    return render(request, "Home/teams_page.html", context)
+    return JsonResponse({'year':season,'teams':data_clean})
+    
 
 def team_page(request,pk):
 

@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <div class="container">
-    <h2 class="header-title">{{year}} TEAMS</h2>
+    <h2 class="header-title" id="season-header"></h2>
 
     <!-- Filter by Year -->
     <select id="season_dropdown" onchange="season_dropdown(this.value);">
@@ -12,7 +12,8 @@
         {% endfor %}
     </select>
 
-    <div class="row g-2">
+    <div class="row g-2" id="teams-page"></div>
+    <!-- <div class="row g-2">
         {% for team in teams %}
         
         <a href="http://127.0.0.1:8000/team/{{team.team_id}}/">
@@ -31,7 +32,7 @@
             </div>
         </a>
         {% endfor %}
-    </div>
+    </div> -->
 
     <div>
         <canvas id="seasonChart"></canvas>

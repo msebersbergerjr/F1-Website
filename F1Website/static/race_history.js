@@ -66,6 +66,7 @@ function update_table(data){
     // console.log(data)
 
     Object.keys(data).forEach(key => {
+        console.log(data[key])
         elem = data[key];
         row = '<tr><td>' + elem['season'] + '</td>' + '<td>' + elem['round'] + '</td>'  + '<td>' + elem['circuit_id'] + '</td>' + '<td>' + elem['date'] + '</td>' + '<td>' + elem['team_id'] + '</td>' + '<td>' + elem['position'] + '</td>' + '<td>' + elem['points'] + '</td>' + '<td>' + elem['status'] + '</td>' + '</tr>'
         all_rows = all_rows + row;
